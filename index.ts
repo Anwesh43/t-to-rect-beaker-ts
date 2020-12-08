@@ -208,3 +208,25 @@ class TRectToBeaker {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    animator : Animator = new Animator()
+    trb : TRectToBeaker = new TRectToBeaker()
+
+    render(context : CanvasRenderingContext2D) {
+        this.trb.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.trb.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.trb.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
